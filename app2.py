@@ -2,7 +2,6 @@
 
 """ Extract text """
 import os
-import subprocess
 import xml.etree.ElementTree as ET
 
 # Get the list of files in the directory
@@ -11,19 +10,18 @@ file_list = os.listdir('pdfs')
 
 for file in file_list:
     """Iterate over all pdf files"""
-    f = file[0:len(file)-4]
+    f = file[0:len(file)-4] # get just the file name withjout extension
     print(file) # print filename
 
     txt_command = 'pdf2txt.py -o txt/' + f + '.txt pdfs/' + file  # txt extraction command
     xml_command = 'pdf2txt.py -t xml -o xml/' + f + '.xml pdfs/' + file # xml extraction command
-    os.system(txt_command)
-    os.system(xml_command)
-
+    os.system(txt_command)  # extract the pdf in txt format and place it in txt folder
+    os.system(xml_command)  # extract the pdf in xml format and place it in xml folder
 
     tree = ET.parse('xml/' + f + '.xml')
     xml_document = tree.getroot()
     
-    for text_tag in xml_document.iter('textline'):
+    for text_tag in xml_document.iter('textline'):  # Parse all text
           word_list = []
           word = ''
           font = ''
@@ -39,13 +37,10 @@ for file in file_list:
                       temp_word['word'] = word
                       temp_word['font_size'] = font_size
                       temp_word['word_location'] = word_location
-                      
+
                       print(temp_word)
+
+                      # set word and temp_word to blank so that we can use it to store next word
                       word = ''
                       temp_word = {}
-          # print(text_tag)
-
-
-  # os.system()
-
 
