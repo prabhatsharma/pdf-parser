@@ -26,6 +26,7 @@ for file in file_list:
 
         tree = ET.parse('xml/' + f + '.xml')
         xml_document = tree.getroot()
+        words = []
 
         for text_tag in xml_document.iter('textline'):  # Parse all text
             word_list = []
@@ -34,6 +35,7 @@ for file in file_list:
             font_size = 10
             word_location = ''
             temp_word = {}
+            
             for character in text_tag:
                 if character.text != '\n' and character.text != ' ' and len(character.text) != 0:
                     word += character.text
@@ -45,7 +47,26 @@ for file in file_list:
                     temp_word['font_size'] = font_size
                     temp_word['word_location'] = word_location
                     temp_word['font'] = font
-                    print(temp_word)
+                  #   print(temp_word)
+                    words.append(temp_word)
                     word = ''
                     temp_word = {}
+      #   print(words)
+        annotated_words = []
+
+        for word in words:
+              if 'Bold' in word['font']:
+                    annotated_words.append(word['word'])
+      #   print(annotated_words)
+        
+        file_data = ''
+        with open('txt/' + f + '.txt', encoding="utf-8") as txt_file:
+              file_data = txt_file.read().replace('\n', ' ').replace('\r', '')
+        txt_file.close()
+
+        print(file_data)
+
+
+
+
 
