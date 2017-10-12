@@ -2,13 +2,16 @@
 
 """ Extract text """
 import os
+import csv
 import xml.etree.ElementTree as ET
 
 # Get the list of files in the directory
 file_list = os.listdir('pdfs')
 # print(file_list)
 
+csvfile = open('analyze.csv', 'w')  
 for file in file_list:
+    
     """Iterate over all pdf files"""
     f = file[0:len(file) - 4]  # get just the file name without extension
     extension = file[len(file)-3:len(file)]
@@ -43,7 +46,7 @@ for file in file_list:
                     word_location = character.attrib['bbox']
                     font = character.attrib['font']
                 elif word != '':
-                    temp_word['word'] = word
+                    temp_word['word'] = word.replace(',', ' ')
                     temp_word['font_size'] = font_size
                     temp_word['word_location'] = word_location
                     temp_word['font'] = font
@@ -52,19 +55,26 @@ for file in file_list:
                     word = ''
                     temp_word = {}
       #   print(words)
-        annotated_words = []
+        annotated_words = ''
 
         for word in words:
-              if 'Bold' in word['font']:
-                    annotated_words.append(word['word'])
+              if 'Bold' in word['font']:  #  Capture all bold words
+                    annotated_words += word['word'] + ' '
       #   print(annotated_words)
         
         file_data = ''
         with open('txt/' + f + '.txt', encoding="utf-8") as txt_file:
-              file_data = txt_file.read().replace('\n', ' ').replace('\r', '')
+              file_data = txt_file.read().replace('\n', ' ').replace('\r', '').replace(',', ' ')
         txt_file.close()
 
-        print(file_data)
+      #   print(file_data)
+
+        # write the contents to csv file
+        csvfile.write(file + ',' + file_data + ',' + annotated_words + '\n')
+
+        
+
+
 
 
 
