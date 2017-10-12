@@ -20,7 +20,7 @@ for file in file_list:
             '.txt pdfs/' + file  # txt extraction command
         xml_command = 'pdf2txt.py -t xml -o xml/' + f + \
             '.xml pdfs/' + file  # xml extraction command
-        
+    
         os.system(txt_command)      # extract the pdf in txt format and place it in txt folder
         os.system(xml_command)      # extract the pdf in xml format and place it in xml folder
 
@@ -35,7 +35,7 @@ for file in file_list:
             word_location = ''
             temp_word = {}
             for character in text_tag:
-                if character.text != '\n' and character.text != ' ' and character.text != '':
+                if character.text != '\n' and character.text != ' ' and len(character.text) != 0:
                     word += character.text
                     font_size = character.attrib['size']
                     word_location = character.attrib['bbox']
@@ -43,9 +43,7 @@ for file in file_list:
                     temp_word['word'] = word
                     temp_word['font_size'] = font_size
                     temp_word['word_location'] = word_location
-            if word !='':
-                print(temp_word)
+                    print(temp_word)
+                    word = ''
+                    temp_word = {}
 
-            # set word and temp_word to blank so that we can use it to store next word
-            word = ''
-            temp_word = {}
