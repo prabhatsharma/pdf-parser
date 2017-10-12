@@ -39,10 +39,12 @@ for file in file_list:
                     word += character.text
                     font_size = character.attrib['size']
                     word_location = character.attrib['bbox']
+                    font = character.attrib['font']
                 elif word != '':
                     temp_word['word'] = word
                     temp_word['font_size'] = font_size
                     temp_word['word_location'] = word_location
+                    temp_word['font'] = font
                     print(temp_word)
                     word = ''
                     temp_word = {}
